@@ -1,0 +1,2 @@
+https://rawgit.com/ivars-vids/sec/master/Upload_HTML_XSS.html
+https://rawgit.com/ivars-vids/sec/master/Upload_SVG_XSS.svg
