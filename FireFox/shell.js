@@ -1,5 +1,4 @@
 function shell(args){
-	var filename;
 	var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
 	var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
 
@@ -10,8 +9,8 @@ function shell(args){
 		args = args.trim().replace(/ +/g,' ').split(' ');
 	}
 
-	filename = args.shift();
-	file.initWithPath(filename);
+	file.initWithPath(args.shift());
 	process.init(file);
 	process.run(false, args, args.length);
+	return process;
 }
