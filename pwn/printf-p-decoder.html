@@ -18,9 +18,8 @@
 			var buffer = input.split('0x');
 			console.log(buffer.length)
 			if (buffer.length > 1){
-				buffer.shift();
+				buffer[0] === '' && buffer.shift();
 				buffer = buffer.map(function(x){
-					console.log(x);
 					return ("00000000000000000000000000000000" + x).substr(bits32?-8:-16);
 				});
 				if (little_endian){
