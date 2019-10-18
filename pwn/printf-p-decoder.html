@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<title>printf %p decoder</title>
+	</head>
+	<style>
+	textarea {
+		width: 100%;
+		height: 100px;
+	}
+	</style>
+	<script type="text/javascript">
+		function decode(){
+			var input = document.getElementById('input').value;
+			var bits32 = document.getElementById('32bit').checked;
+			var little_endian = document.getElementById('little-endian').checked;
+			var output = '';
+			
+			var buffer = input.split('0x');
+			console.log(buffer.length)
+			if (buffer.length > 1){
+				buffer.shift();
+				buffer = buffer.map(function(x){
+					console.log(x);
+					return ("00000000000000000000000000000000" + x).substr(bits32?-8:-16);
+				});
+				if (little_endian){
+					buffer = buffer.map(function(x){
+						if (bits32){
+							return x.replace(/^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i,'$4$3$2$1')
+						}else{
+							return x.replace(/^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i,'$8$7$6$5$4$3$2$1')
+						}
+					});
+				}
+				output = buffer.join('');
+			}
+			
+			document.getElementById('hex').value = output;
+			output = output.replace(/([0-9a-f]{2})/ig,'%$1');
+			output = unescape(output);
+			document.getElementById('ascii').value = unescape(output.replace(/([0-9a-f]{2})/ig,'%$1'))
+		}
+	</script>
+<body>
+<h2>%p%p%p%p%p%p%p%p%p%p</h2>
+<div>
+	<p>
+		<label for="input">Memory Dump:</label>
+	</p>
+	<p>
+		<textarea id="input"></textarea>
+	</p>
+	<p>
+		<input type="radio" id="32bit" value="true" name="bits" checked="checked" />
+		<label for="32bit">32-bit</label>
+		<input type="radio" id="64bit" value="true" name="bits" />
+		<label for="64bit">64-bit</label>
+	</p>	
+	<p>
+		<input type="radio" id="little-endian" value="true" name="endian" checked="checked" />
+		<label for="little-endian">Little-Endian</label>
+		<input type="radio" id="big-endian" value="true" name="endian" />
+		<label for="big-endian">Big-Endian</label>
+	</p>
+	<p>
+		<input type="button" value="Decode" onclick="decode()" />
+	</p>
+</div>
+<hr />
+<div>
+	<p>
+		<label for="hex">Decoded HEX:</label>
+	</p>
+	<p>
+		<textarea id="hex" readonly="readonly"></textarea>
+	</p>
+	<p>
+		<label for="ascii">Decoded ASCII:</label>
+	</p>
+	<p>
+		<textarea id="ascii" readonly="readonly"></textarea>
+	</p>
+</div>
+</body>
+</html>
