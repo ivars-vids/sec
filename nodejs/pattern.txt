@@ -1,2 +1,15 @@
 __proto__
 (=\s*?\{\s*?\.{3}[^,}]+\s*?\}|for\s*?\(.*?\s+in\s+.*?\)|Object\.assign\()
+
+"__proto__": {
+	"__test": "__TEST1",
+	"__proto__": {
+		"__test": "__TEST2",
+		"__proto__": {
+			"__test": "__TEST3",
+			"__proto__": {
+				"__test": "__TEST4"
+			}
+		}
+	}
+}
