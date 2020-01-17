@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Export webpack
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  try to take over the world!
 // @author       You
 // @include      *
@@ -90,7 +90,7 @@
 
 
     GM_registerMenuCommand( '[Export webpack]', function(){
-        if ('webpackJsonp' in unsafeWindow && webpackJsonp instanceof Array){
+        if (('webpackJsonp' in unsafeWindow) && (unsafeWindow.webpackJsonp instanceof Array)){
             let LoadJS = [];
 
             unsafeWindow.webpackJsonp.push(
