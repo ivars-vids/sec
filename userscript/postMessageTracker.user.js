@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         onMessage Tracker
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Userscript which helps you to analyze postMessage process
 // @author       Ivars Vids
 // @include      *
@@ -16,9 +16,15 @@
     let _addEventListener;
     let _onmessage = '';
     win.addEventListener('message', function(ev){
-        ev.data
-        console.log('%cpostMessage(message, "?") //' + ev.source.location.href + ' => ' + (this && this.location && this.location.href) ,'color:blue;font-size:20px;');
-        console.log(typeof ev.data === 'string'?JSON.stringify(ev.data):ev.data);
+        let source
+        let target = ev.target && ev.target.location && ev.target.location.href;
+        try{
+            source = ev.source && ev.source.location && ev.source.location.href;
+        } catch(e){
+            source = ev.origin;
+        }
+        console.log(`%cpostMessage(message, "?") //${source} =>  ${target}` ,'color:blue;font-size:20px;');
+        console.log(typeof ev.data === 'string'?`\`${ev.data}\``:ev.data);
     }, true)
 
     _addEventListener = win.EventTarget.prototype.addEventListener;
@@ -32,7 +38,7 @@
 
     win.EventTarget.prototype.addEventListener = function(ev, func, cap){
         if (ev === 'message' && this === win){
-            console.log('%caddEventListener(message, ...) //' + location.href, 'color:green;font-size:20px;');
+            console.log(`%caddEventListener(message, ...) //${location.href}`, 'color:green;font-size:20px;');
             try{throw new Error('Stack Trace')}catch(stack){console.log(stack);}
             console.log(func);
             console.log(js_beautify(func.toString()));
@@ -45,7 +51,7 @@
         //console.log(typeof win.onmessage);
         if (typeof win.onmessage === 'function' && _onmessage !== win.onmessage.toString()){
             _onmessage = win.onmessage.toString();
-            console.log('%cwindow.onmessage //' + location.href, 'color:green;font-size:20px;');
+            console.log(`%cwindow.onmessage //${location.href}`, 'color:green;font-size:20px;');
             try{throw 'Stack Trace'}catch(stack){console.log(stack);}
             console.log(win.onmessage);
             console.log( js_beautify(_onmessage));
