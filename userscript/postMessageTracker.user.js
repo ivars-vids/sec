@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         onMessage Tracker
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Userscript which helps you to analyze postMessage process
 // @author       Ivars Vids
 // @include      *
@@ -16,8 +16,8 @@
     let _addEventListener;
     let _onmessage = '';
     win.addEventListener('message', function(ev){
-        let source
-        let target = ev.target && ev.target.location && ev.target.location.href;
+        const target = ev.target && ev.target.location && ev.target.location.href;
+        let source;
         try{
             source = ev.source && ev.source.location && ev.source.location.href;
         } catch(e){
@@ -39,7 +39,8 @@
     win.EventTarget.prototype.addEventListener = function(ev, func, cap){
         if (ev === 'message' && this === win){
             console.log(`%caddEventListener(message, ...) //${location.href}`, 'color:green;font-size:20px;');
-            try{throw new Error('Stack Trace')}catch(stack){console.log(stack);}
+            let err = new Error('err').stack.split('\n');
+            console.log('Called from' + (err.length>=3?err[2].replace(/^ +at/,''):' *** unknown'));
             console.log(func);
             console.log(js_beautify(func.toString()));
         }
@@ -52,7 +53,8 @@
         if (typeof win.onmessage === 'function' && _onmessage !== win.onmessage.toString()){
             _onmessage = win.onmessage.toString();
             console.log(`%cwindow.onmessage //${location.href}`, 'color:green;font-size:20px;');
-            try{throw 'Stack Trace'}catch(stack){console.log(stack);}
+            let err = new Error('err').stack.split('\n');
+            console.log('Called from' + (err.length>=3?err[2].replace(/^ +at/,''):' *** unknown'));
             console.log(win.onmessage);
             console.log( js_beautify(_onmessage));
         }
