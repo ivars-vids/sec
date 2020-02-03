@@ -1,1 +1,0 @@
-top.postMessage(token,'*');
