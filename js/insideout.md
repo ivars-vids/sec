@@ -1,16 +1,12 @@
 # ANGULAR
 ```
 <script>
-Object.prototype.toLog = function(){
-	if (!this.$eval){
-		return
-	}
-	delete Object.prototype.toLog
-	console.log('$scope', this);
-	return this;
+Array.prototype.toLog = function(){
+	this.forEach(console.log);
+	return 'Go check console.log'
 }
 </script>
-{{ $root.toLog() }}
+{{ [this, $root].toLog() }}
 ```
 
 # WEBPACK ARRAY
