@@ -67,7 +67,7 @@
             console.log(func);
             console.log(js_beautify(func.toString()));
         }
-        if (this && '_addEventListener' in this){
+        if (this && '_addEventListener' in Object(this) && typeof this._addEventListener === 'function'){
             return this._addEventListener(ev, func, cap);
         }
         return win.EventTarget.prototype._addEventListener.call(this, ev, func, cap);
