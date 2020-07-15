@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         onMessage Tracker
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Userscript which helps you to analyze postMessage process
 // @author       Ivars Vids
 // @include      *
@@ -83,8 +83,21 @@
         }
     }, 1000);
 
+    /* this is for target tracking
+    win.postMessage = function(data, target){
+        console.log(`%cpostMessageHook(message, ${target}) //${location.href}`, 'color:red;font-size:20px;');
+        getStack();
+        console.log(typeof data === 'string'?`\`${data}\``:data);
+    }
+    /**/
+
+    /* this is for target tracking
     function getStack(){
         let err = new Error('err').stack.split('\n');
         console.log('Called from' + (err.length>=4?err[3].replace(/^ +at/,''):' *** unknown'));
     }
+
+    win.eval = function(c){console.log('!!!EVAL', location.href, c)};
+    win.Function.constructor = function(c){console.log('!!!FUNCTION', location.href, c)};
+    /**/
 })();
