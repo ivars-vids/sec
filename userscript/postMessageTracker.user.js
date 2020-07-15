@@ -92,12 +92,13 @@
     /**/
 
     /* this is for target tracking
+    win.eval = function(c){console.log('!!!EVAL', location.href, c)};
+    win.Function.constructor = function(c){console.log('!!!FUNCTION', location.href, c)};
+    /**/
+
     function getStack(){
         let err = new Error('err').stack.split('\n');
         console.log('Called from' + (err.length>=4?err[3].replace(/^ +at/,''):' *** unknown'));
     }
 
-    win.eval = function(c){console.log('!!!EVAL', location.href, c)};
-    win.Function.constructor = function(c){console.log('!!!FUNCTION', location.href, c)};
-    /**/
 })();
