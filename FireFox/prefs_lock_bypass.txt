@@ -1,2 +1,9 @@
 // about:config
+```
 (function(x,p,i){i=p.getChildList('');for(;x<i.length;x++){if(p.prefIsLocked(i[x])){p.unlockPref(i[x]);}}})(0,Services.prefs);
+```
+
+// optimization
+```
+(function(p){p.getChildList('').filter(e=>p.prefIsLocked(e)).forEach(e=>p.unlockPref(e))})(Services.prefs);
+```
